@@ -1,5 +1,9 @@
 class Station:
-	def __init__(self, name: str, coordinates: tuple[float, float]):
+	def __init__(
+		self,
+		name: str,
+		coordinates: tuple[float, float],
+	):
 		self.name = name
 		self.coordinates = coordinates
 
@@ -28,17 +32,24 @@ class MetroGraph:
 			self.stations[station.name] = station
 			self.graph[station.name] = {}
 
-	def add_connection(self, start_station: str, end_station: str, time: float):
+	def add_connection(
+		self,
+		start_station: str,
+		end_station: str,
+		time: float,
+	):
 		'''Add connection time between two station names.'''
 		if start_station in self.graph and end_station in self.graph:
 			# Assume bidirectional connections
 			self.graph[start_station][end_station] = time
 			self.graph[end_station][start_station] = time
 		else:
-			raise Exception('Invalid connection: One or more stations not in graph.')
+			raise KeyError('Invalid connection: One or more stations not in graph.')
 
 	def shortest_path(
-		self, start_station: str, end_station: str
+		self,
+		start_station: str,
+		end_station: str,
 	) -> tuple[float, list[str] | None]:
 		'''Returns the distance and shortest path between stations.'''
 		# Initialize distances dictionary with infinity for all stations except start_station

@@ -2,7 +2,7 @@ from classes.activity import Activity
 from classes.eta_calculator import ETACalculator
 
 class Suggestion:
-	'''A suggestion is an activity recommended based on a given user request.'''
+	'''A suggestion is an activity recommended based on a given user midpoint request.'''
 
 	def __init__(self, activity: Activity, user1_eta: float, user2_eta: float):
 		self.activity = activity

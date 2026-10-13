@@ -75,12 +75,17 @@ def load_users() -> dict[str, User]:
 
 	return users_by_id
 
-def load_midpoint_requests() -> dict[str, MidpointRequest]:
+def load_midpoint_requests(
+	larger_groups: bool = False,
+) -> dict[str, MidpointRequest]:
 	'''Loads midpoint data from the default file location.'''
 	requests_by_id = {}
 	users_by_id = load_users()
 
-	with open(os.path.join('src', 'data', 'midpoint-requests.csv')) as csvfile:
+	file = 'midpoint-requests.csv'
+	if larger_groups: file = 'group-midpoint-requests.csv'
+
+	with open(os.path.join('src', 'data', file)) as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			owner = users_by_id[row['owner_id']]

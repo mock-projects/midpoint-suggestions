@@ -46,7 +46,10 @@ def print_request_details(
 
 if __name__ == '__main__':
 	metro_graph = load_metro_graph()
-	midpoint_requests = [*load_midpoint_requests().values()]
+	midpoint_requests = [
+		*load_midpoint_requests().values(),
+		*load_midpoint_requests(larger_groups=True).values(),
+	]
 	activities = [*load_activities().values()]
 
 	main(activities, midpoint_requests,  metro_graph)

@@ -25,10 +25,9 @@ def main(
 	print('Finding suggested activities...\n')
 	for request in midpoint_requests:
 		suggestion = suggest_midpoint_activity(
-			request.user1_location,
-			request.user2_location,
-			activities,
 			eta_calculator,
+			request,
+			activities,
 		)
 		print_request_details(request, suggestion)
 

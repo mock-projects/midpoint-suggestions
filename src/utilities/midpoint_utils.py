@@ -6,6 +6,31 @@ from classes.metro_graph import MetroGraph, Station
 from classes.midpoint_request import MidpointRequest
 from classes.user import User
 
+def filter_activities_for_request(
+	activities: list[Activity],
+	request: MidpointRequest,
+) -> list[Activity]:
+	'''
+	Filters activities given a request object.
+	If those filters are too harsh, it returns any
+	activities that have a matching activity category.
+	'''
+	# Fallback filter includes all activities of a matching category.
+	fallback = [
+		activity for activity in activities
+		if activity.category == request.category
+	]
+
+	# Full filter includes all user request preferences.
+	filtered = [
+		activity for activity in fallback
+		if activity.price_tier <= request.price_tier
+		and activity.duration <= request.duration
+		and activity.rating >= request.rating
+	]
+
+	return filtered if filtered else fallback
+
 def load_activities() -> dict[str, Activity]:
 	'''Loads activities from the default activities data file location.'''
 	activities_by_id = {}

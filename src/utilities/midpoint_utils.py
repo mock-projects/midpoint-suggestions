@@ -86,6 +86,13 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 			owner = users_by_id[row['owner_id']]
 			user1 = users_by_id[row['participant1_id']]
 			user2 = users_by_id[row['participant2_id']]
+			user1_location = user1.locations[row['location1_id']]
+			user2_location = user2.locations[row['location2_id']]
+			# Create a basic user-location lookup dictionary.
+			user_locations = {
+				user1: user1_location,
+				user2: user2_location,
+			}
 
 			requests_by_id[row['request_id']] = MidpointRequest(
 				# Set core request data.
@@ -96,10 +103,7 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 				duration=float(row['duration']),
 				# Load and set specific user details.
 				owner=owner,
-				user1=user1,
-				user2=user2,
-				user1_location=user1.locations[row['location1_id']],
-				user2_location=user2.locations[row['location2_id']],
+				user_locations=user_locations,
 			)
 
 	return requests_by_id

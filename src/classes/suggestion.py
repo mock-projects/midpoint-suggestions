@@ -1,6 +1,7 @@
 from classes.activity import Activity
 from classes.eta_calculator import ETACalculator
 from classes.midpoint_request import MidpointRequest
+from classes.user import User
 
 class Suggestion:
 	'''
@@ -8,15 +9,19 @@ class Suggestion:
 	based on a given user midpoint request.
 	'''
 
-	def __init__(self, activity: Activity, user1_eta: float, user2_eta: float):
+	def __init__(
+		self,
+		activity: Activity,
+		etas: dict[User, float]
+	):
 		self.activity = activity
-		self.user1_eta = user1_eta
-		self.user2_eta = user2_eta
+		self.etas = etas
+		self.users = [*etas.keys()]
 
 	def print_details(self):
 		print(f'Suggested activity: {self.activity}')
-		print(f'Distance from User 1: {self.user1_eta} minutes')
-		print(f'Distance from User 2: {self.user2_eta} minutes')
+		for user, eta in self.etas.items():
+			print(f'Distance from {user}: {eta}')
 
 def suggest_midpoint_activity(
 	eta_calculator: ETACalculator,

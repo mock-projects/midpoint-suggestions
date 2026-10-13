@@ -84,15 +84,19 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			owner = users_by_id[row['owner_id']]
-			user1 = users_by_id[row['participant1_id']]
-			user2 = users_by_id[row['participant2_id']]
-			user1_location = user1.locations[row['location1_id']]
-			user2_location = user2.locations[row['location2_id']]
-			# Create a basic user-location lookup dictionary.
-			user_locations = {
-				user1: user1_location,
-				user2: user2_location,
-			}
+
+			# Load each participant and their selected location.
+			user_locations: dict[User, tuple[float, float]] = {}
+			participant_iterator = 1
+			while f'participant{participant_iterator}_id' in row:
+				# Get participant ID and location ID for this ordinal.
+				participant_id = row[f'participant{participant_iterator}_id']
+				location_id = row[f'location{participant_iterator}_id']
+				# Get the user, and set their location.
+				user = users_by_id[participant_id]
+				user_locations[user] = user.locations[location_id]
+				# Increment the iterator value.
+				participant_iterator += 1
 
 			requests_by_id[row['request_id']] = MidpointRequest(
 				# Set core request data.

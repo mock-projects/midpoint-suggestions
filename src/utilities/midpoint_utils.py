@@ -6,6 +6,31 @@ from classes.metro_graph import MetroGraph, Station
 from classes.midpoint_request import MidpointRequest
 from classes.user import User
 
+def filter_activities_for_request(
+	activities: list[Activity],
+	request: MidpointRequest,
+) -> list[Activity]:
+	'''
+	Filters activities given a request object.
+	If those filters are too harsh, it returns any
+	activities that have a matching activity category.
+	'''
+	# Fallback filter includes all activities of a matching category.
+	fallback = [
+		activity for activity in activities
+		if activity.category == request.category
+	]
+
+	# Full filter includes all user request preferences.
+	filtered = [
+		activity for activity in fallback
+		if activity.price_tier <= request.price_tier
+		and activity.duration <= request.duration
+		and activity.rating >= request.rating
+	]
+
+	return filtered if filtered else fallback
+
 def load_activities() -> dict[str, Activity]:
 	'''Loads activities from the default activities data file location.'''
 	activities_by_id = {}
@@ -50,17 +75,33 @@ def load_users() -> dict[str, User]:
 
 	return users_by_id
 
-def load_midpoint_requests() -> dict[str, MidpointRequest]:
+def load_midpoint_requests(
+	larger_groups: bool = False,
+) -> dict[str, MidpointRequest]:
 	'''Loads midpoint data from the default file location.'''
 	requests_by_id = {}
 	users_by_id = load_users()
 
-	with open(os.path.join('src', 'data', 'midpoint-requests.csv')) as csvfile:
+	file = 'midpoint-requests.csv'
+	if larger_groups: file = 'group-midpoint-requests.csv'
+
+	with open(os.path.join('src', 'data', file)) as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			owner = users_by_id[row['owner_id']]
-			user1 = users_by_id[row['participant1_id']]
-			user2 = users_by_id[row['participant2_id']]
+
+			# Load each participant and their selected location.
+			user_locations: dict[User, tuple[float, float]] = {}
+			participant_iterator = 1
+			while f'participant{participant_iterator}_id' in row:
+				# Get participant ID and location ID for this ordinal.
+				participant_id = row[f'participant{participant_iterator}_id']
+				location_id = row[f'location{participant_iterator}_id']
+				# Get the user, and set their location.
+				user = users_by_id[participant_id]
+				user_locations[user] = user.locations[location_id]
+				# Increment the iterator value.
+				participant_iterator += 1
 
 			requests_by_id[row['request_id']] = MidpointRequest(
 				# Set core request data.
@@ -71,10 +112,7 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 				duration=float(row['duration']),
 				# Load and set specific user details.
 				owner=owner,
-				user1=user1,
-				user2=user2,
-				user1_location=user1.locations[row['location1_id']],
-				user2_location=user2.locations[row['location2_id']],
+				user_locations=user_locations,
 			)
 
 	return requests_by_id

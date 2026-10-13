@@ -25,10 +25,9 @@ def main(
 	print('Finding suggested activities...\n')
 	for request in midpoint_requests:
 		suggestion = suggest_midpoint_activity(
-			request.user1_location,
-			request.user2_location,
-			activities,
 			eta_calculator,
+			request,
+			activities,
 		)
 		print_request_details(request, suggestion)
 
@@ -36,18 +35,21 @@ def print_request_details(
 	request: MidpointRequest,
 	suggestion: Suggestion | None,
 ):
+	print(f'Results for request: {request}')
 	if suggestion is None:
 		# Print a warning that no suggestion was found for the request.
-		print(f'No suggestion generated for request: {request}')
+		print('No suggestion generated for this request.')
 	else:
 		# Print details about this request's suggested activity.
-		print(f'Suggested activity for request: {request}')
 		suggestion.print_details()
 	print()
 
 if __name__ == '__main__':
 	metro_graph = load_metro_graph()
-	midpoint_requests = [*load_midpoint_requests().values()]
+	midpoint_requests = [
+		*load_midpoint_requests().values(),
+		*load_midpoint_requests(larger_groups=True).values(),
+	]
 	activities = [*load_activities().values()]
 
 	main(activities, midpoint_requests,  metro_graph)

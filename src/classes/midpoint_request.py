@@ -1,7 +1,10 @@
 from classes.user import User
 
 class MidpointRequest:
-	'''Represents a request received by the application to find a midpoint activity between two users.'''
+	'''
+	Represents a request received by the application
+	to find a midpoint activity between users.
+	'''
 
 	def __init__(
 		self,
@@ -13,10 +16,7 @@ class MidpointRequest:
 		duration: float,
 		# Entity relationships
 		owner: User,
-		user1: User,
-		user2: User,
-		user1_location: tuple[float, float],
-		user2_location: tuple[float, float],
+		user_locations: dict[User, tuple[float, float]]
 	):
 		# Core request data
 		self.request_id = request_id
@@ -26,10 +26,11 @@ class MidpointRequest:
 		self.duration = duration
 		# Entity relationships
 		self.owner = owner
-		self.user1 = user1
-		self.user2 = user2
-		self.user1_location = user1_location
-		self.user2_location = user2_location
+		self.user_locations = user_locations
 
 	def __repr__(self):
 		return f'MidpointRequest<{self.request_id}>'
+
+	@property
+	def users(self):
+		return [*self.user_locations.keys()]

@@ -3,19 +3,21 @@ class Activity:
 
 	def __init__(
 		self,
+		activity_id: str,
 		name: str,
+		category: str,
 		coordinates: tuple[float, float],
-		activity_type: str,
 		rating: float,
-		price_category: float,
-		time_needed: float,
+		price_tier: float,
+		duration: float,
 	):
+		self.activity_id = activity_id
 		self.name = name
+		self.category = category
 		self.coordinates = coordinates
-		self.activity_type = activity_type
 		self.rating = rating
-		self.price_category = price_category
-		self.time_needed = time_needed
+		self.price_tier = price_tier
+		self.duration = duration
 
 	def __repr__(self):
-		return f'Activity({self.name})'
+		return f'Activity<{self.name}>'

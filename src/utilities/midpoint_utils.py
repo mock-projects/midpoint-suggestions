@@ -13,15 +13,16 @@ def load_activities() -> dict[str, Activity]:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			activities_by_id[row['activity_id']] = Activity(
+				activity_id=row['activity_id'],
 				name=row['name'],
+				category=row['category'],
 				coordinates=(
 					float(row['latitude']),
 					float(row['longitude'])
 				),
-				activity_type=row['category'],
 				rating=float(row['rating']),
-				price_category=float(row['price_tier']),
-				time_needed=float(row['duration']),
+				price_tier=float(row['price_tier']),
+				duration=float(row['duration']),
 			)
 
 	return activities_by_id

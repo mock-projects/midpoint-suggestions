@@ -4,6 +4,7 @@ import os
 from classes.activity import Activity
 from classes.metro_graph import MetroGraph, Station
 from classes.midpoint_request import MidpointRequest
+from classes.user import User
 
 def load_activities() -> dict[str, Activity]:
 	'''Loads activities from the default activities data file location.'''
@@ -24,6 +25,29 @@ def load_activities() -> dict[str, Activity]:
 			)
 
 	return activities_by_id
+
+def load_users() -> dict[str, User]:
+	'''Loads users from the default user data file location.'''
+	users_by_id: dict[str, User] = {}
+	with open(os.path.join('src', 'data', 'users.csv')) as csvfile:
+		reader = csv.DictReader(csvfile)
+		for row in reader:
+			user_id = row['user_id']
+			user = users_by_id.get(user_id)
+
+			# If the user doesn't exist yet, create one.
+			if user is None:
+				user = User(user_id)
+				users_by_id[user_id] = user
+
+			# Save location data.
+			# A user can have multiple saved locations.
+			user.locations[row['location_id']] = (
+				float(row['latitude']),
+				float(row['longitude']),
+			)
+
+	return users_by_id
 
 def load_midpoint_requests() -> dict[str, MidpointRequest]:
 	'''Loads midpoint data from the default file location.'''

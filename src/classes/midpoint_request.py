@@ -1,4 +1,4 @@
-class UserRequest:
+class MidpointRequest:
 	'''Represents a request received by the application to find a midpoint activity between two users.'''
 
 	def __init__(
@@ -20,4 +20,4 @@ class UserRequest:
 		self.time_needed = time_needed
 
 	def __repr__(self):
-		return f'UserRequest({self.user_id})'
+		return f'MidpointRequest({self.user_id})'

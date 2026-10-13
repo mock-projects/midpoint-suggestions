@@ -14,9 +14,9 @@ When making a midpoint request, we ask users to enter in preferences in the foll
 - `time_needed` is a floating-point number representing the **maximum** amount of time in hours a user has allotted for the activity
 
 Currently, `suggest_midpoint_activity()` is called in [main.py] with the full activity database, regardless of user preferences.
-Update the program to filter the activities based on the user request, so that `suggest_midpoint_activity()` only receives activities that meet the user preferences.
+Update the program to filter the activities based on the user's midpoint request, so that `suggest_midpoint_activity()` only receives activities that meet the user preferences.
 
-If no activities meet the user request, default to only filtering by activity type.
+If no activities meet the user's midpoint request, default to only filtering by activity type.
 
 ## Task 2
 Complete the implementation of `suggest_midpoint_activity()` in [suggestion.py], which should find a suggested activity between two user coordinates based on commute time.
@@ -31,7 +31,7 @@ You are therefore encouraged to implement heuristics or other strategies to mini
 Currently, our program only works for finding midpoint activities for pairs of two people at a time.
 We would like to experiment with finding midpoint activities for larger groups of people, too.
 
-Update the program to use the data in [user-group-requests.csv] instead of [user-requests.csv].
+Update the program to use the data in [group-midpoint-requests.csv] instead of [midpoint-requests.csv].
 The new file contains requests from groups of 4 users, each with their own location.
 
 Then, make any updates necessary to the program to support making activity suggestions for groups of users, taking into account both total commute time and fairness (no user has to travel too much further than any other user) for all users.
@@ -42,5 +42,5 @@ You are welcome to add any additional methods or files you'd like, and you can c
 [main.py]: src/main.py
 [suggestion.py]: src/classes/suggestion.py
 [eta_calculator.py]: src/classes/eta_calculator.py
-[user-group-requests.csv]: src/data/user-group-requests.csv
-[user-requests.csv]: src/data/user-requests.csv
+[group-midpoint-requests.csv]: src/data/group-midpoint-requests.csv
+[midpoint-requests.csv]: src/data/midpoint-requests.csv

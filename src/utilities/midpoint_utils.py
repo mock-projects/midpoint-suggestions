@@ -3,7 +3,7 @@ import os
 
 from classes.activity import Activity
 from classes.metro_graph import MetroGraph, Station
-from classes.user_request import UserRequest
+from classes.midpoint_request import MidpointRequest
 
 def load_metro_graph() -> MetroGraph:
 	'''Loads metro stations and connections from disk to create metro map.'''
@@ -34,13 +34,13 @@ def load_metro_graph() -> MetroGraph:
 
 	return graph
 
-def load_user_requests() -> list[UserRequest]:
-	user_requests = []
-	with open(os.path.join('src', 'data', 'user-requests.csv')) as csvfile:
+def load_midpoint_requests() -> list[MidpointRequest]:
+	midpoint_requests = []
+	with open(os.path.join('src', 'data', 'midpoint-requests.csv')) as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
-			user_requests.append(
-				UserRequest(
+			midpoint_requests.append(
+				MidpointRequest(
 					user_id=row['owner_id'],
 					user1_location=(
 						float(row['l1_latitude']),
@@ -56,7 +56,7 @@ def load_user_requests() -> list[UserRequest]:
 					time_needed=float(row['duration']),
 				)
 			)
-	return user_requests
+	return midpoint_requests
 
 def load_activities() -> list[Activity]:
 	activities = []

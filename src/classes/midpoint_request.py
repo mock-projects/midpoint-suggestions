@@ -3,21 +3,31 @@ class MidpointRequest:
 
 	def __init__(
 		self,
-		user_id: str,
+		# Core request data
+		request_id: str,
+		category: str,
+		rating: float,
+		price_tier: float,
+		duration: float,
+		# Entity relationships
+		owner_id: str,
+		user1_id: str,
+		user2_id: str,
 		user1_location: tuple[float, float],
 		user2_location: tuple[float, float],
-		activity_type: str,
-		rating: float,
-		price_category: float,
-		time_needed: float,
 	):
-		self.user_id = user_id
+		# Core request data
+		self.request_id = request_id
+		self.category = category
+		self.rating = rating
+		self.price_tier = price_tier
+		self.duration = duration
+		# Entity relationships
+		self.owner_id = owner_id
+		self.user1_id = user1_id
+		self.user2_id = user2_id
 		self.user1_location = user1_location
 		self.user2_location = user2_location
-		self.activity_type = activity_type
-		self.rating = rating
-		self.price_category = price_category
-		self.time_needed = time_needed
 
 	def __repr__(self):
-		return f'MidpointRequest({self.user_id})'
+		return f'MidpointRequest<{self.request_id}>'

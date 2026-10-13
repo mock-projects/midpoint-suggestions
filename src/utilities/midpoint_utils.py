@@ -57,7 +57,10 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			requests_by_id[row['request_id']] = MidpointRequest(
-				user_id=row['owner_id'],
+				request_id=row['request_id'],
+				owner_id=row['owner_id'],
+				user1_id=row['owner_id'],
+				user2_id='Unknown', # TODO: We will have to load in additional user data here later!
 				user1_location=(
 					float(row['l1_latitude']),
 					float(row['l1_longitude']),
@@ -66,10 +69,10 @@ def load_midpoint_requests() -> dict[str, MidpointRequest]:
 					float(row['l2_latitude']),
 					float(row['l2_longitude']),
 				),
-				activity_type=row['category'],
+				category=row['category'],
 				rating=float(row['rating']),
-				price_category=float(row['price_tier']),
-				time_needed=float(row['duration']),
+				price_tier=float(row['price_tier']),
+				duration=float(row['duration']),
 			)
 
 	return requests_by_id

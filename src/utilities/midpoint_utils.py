@@ -53,26 +53,28 @@ def load_users() -> dict[str, User]:
 def load_midpoint_requests() -> dict[str, MidpointRequest]:
 	'''Loads midpoint data from the default file location.'''
 	requests_by_id = {}
+	users_by_id = load_users()
+
 	with open(os.path.join('src', 'data', 'midpoint-requests.csv')) as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
+			owner = users_by_id[row['owner_id']]
+			user1 = users_by_id[row['participant1_id']]
+			user2 = users_by_id[row['participant2_id']]
+
 			requests_by_id[row['request_id']] = MidpointRequest(
+				# Set core request data.
 				request_id=row['request_id'],
-				owner_id=row['owner_id'],
-				user1_id=row['owner_id'],
-				user2_id='Unknown', # TODO: We will have to load in additional user data here later!
-				user1_location=(
-					float(row['l1_latitude']),
-					float(row['l1_longitude']),
-				),
-				user2_location=(
-					float(row['l2_latitude']),
-					float(row['l2_longitude']),
-				),
 				category=row['category'],
 				rating=float(row['rating']),
 				price_tier=float(row['price_tier']),
 				duration=float(row['duration']),
+				# Load and set specific user details.
+				owner=owner,
+				user1=user1,
+				user2=user2,
+				user1_location=user1.locations[row['location1_id']],
+				user2_location=user2.locations[row['location2_id']],
 			)
 
 	return requests_by_id

@@ -1,3 +1,5 @@
+from classes.user import User
+
 class MidpointRequest:
 	'''Represents a request received by the application to find a midpoint activity between two users.'''
 
@@ -10,9 +12,9 @@ class MidpointRequest:
 		price_tier: float,
 		duration: float,
 		# Entity relationships
-		owner_id: str,
-		user1_id: str,
-		user2_id: str,
+		owner: User,
+		user1: User,
+		user2: User,
 		user1_location: tuple[float, float],
 		user2_location: tuple[float, float],
 	):
@@ -23,9 +25,9 @@ class MidpointRequest:
 		self.price_tier = price_tier
 		self.duration = duration
 		# Entity relationships
-		self.owner_id = owner_id
-		self.user1_id = user1_id
-		self.user2_id = user2_id
+		self.owner = owner
+		self.user1 = user1
+		self.user2 = user2
 		self.user1_location = user1_location
 		self.user2_location = user2_location
 

@@ -1,7 +1,10 @@
 from classes.user import User
 
 class MidpointRequest:
-	'''Represents a request received by the application to find a midpoint activity between two users.'''
+	'''
+	Represents a request received by the application
+	to find a midpoint activity between users.
+	'''
 
 	def __init__(
 		self,
